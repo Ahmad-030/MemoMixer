@@ -8,6 +8,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:intl/intl.dart';
 
 import 'app_theme.dart';
+import 'empty_state.dart';
 import 'note_detail_screen.dart';
 import 'note_model.dart';
 import 'notes_provider.dart';

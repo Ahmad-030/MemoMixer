@@ -1,12 +1,9 @@
-// lib/screens/search_screen.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
-
-import 'app_theme.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'notes_provider.dart';
+import 'note_list_tile.dart'; // ✅ Fix: import NoteListTile
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -16,124 +13,102 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final _controller = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(() {
+      context.read<NotesProvider>().searchNotes(_searchController.text);
+    });
+  }
 
   @override
   void dispose() {
-    _controller.dispose();
-    context.read<NotesProvider>().clearFilters();
+    _searchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // ✅ Fix: removed unused 'isDark' variable
+    final colorScheme = Theme.of(context).colorScheme;
     final provider = context.watch<NotesProvider>();
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
-        title: TextField(
-          controller: _controller,
-          autofocus: true,
-          onChanged: provider.setSearchQuery,
-          decoration: InputDecoration(
-            hintText: 'Search notes…',
-            hintStyle: GoogleFonts.syne(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onBackground
-                    .withOpacity(0.4)),
-            border: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            fillColor: Colors.transparent,
-          ),
-          style: GoogleFonts.syne(fontSize: 18, fontWeight: FontWeight.w600),
+        title: Text(
+          'Search',
+          style: GoogleFonts.syne(fontWeight: FontWeight.w700),
         ),
-        actions: [
-          if (provider.searchQuery.isNotEmpty || provider.activeTagFilters.isNotEmpty)
-            IconButton(
-              icon: const Icon(Icons.clear_rounded),
-              onPressed: () {
-                _controller.clear();
-                provider.clearFilters();
-              },
-            ),
-        ],
-      ),
-      body: Column(
-        children: [
-          // Tag filters
-          if (provider.allTags.isNotEmpty)
-            SizedBox(
-              height: 48,
-              child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                scrollDirection: Axis.horizontal,
-                itemCount: provider.allTags.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 8),
-                itemBuilder: (_, i) {
-                  final tag = provider.allTags[i];
-                  final active = provider.activeTagFilters.contains(tag);
-                  return FilterChip(
-                    label: Text('#$tag'),
-                    selected: active,
-                    onSelected: (_) => provider.toggleTagFilter(tag),
-                    selectedColor: AppColors.coral,
-                    checkmarkColor: Colors.white,
-                    labelStyle: GoogleFonts.syne(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: active ? Colors.white : null,
-                    ),
-                  );
-                },
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(64),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+            child: TextField(
+              controller: _searchController,
+              autofocus: true,
+              decoration: InputDecoration(
+                hintText: 'Search notes...',
+                hintStyle: GoogleFonts.syne(
+                  color: colorScheme.onSurface.withValues(alpha: 0.4), // ✅ Fix: withValues instead of withOpacity
+                ),
+                prefixIcon: Icon(
+                  Icons.search_rounded,
+                  color: colorScheme.onSurface.withValues(alpha: 0.4), // ✅ Fix
+                ),
+                suffixIcon: _searchController.text.isNotEmpty
+                    ? IconButton(
+                  icon: const Icon(Icons.clear_rounded),
+                  onPressed: () {
+                    _searchController.clear();
+                    context.read<NotesProvider>().searchNotes('');
+                  },
+                )
+                    : null,
+                filled: true,
+                fillColor: colorScheme.surfaceContainerHighest,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
               ),
-            ).animate().fadeIn(duration: 300.ms),
-
-          const Divider(height: 1),
-
-          // Results
-          Expanded(
-            child: provider.filteredNotes.isEmpty
-                ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.search_off_rounded,
-                      size: 64,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onBackground
-                          .withOpacity(0.2)),
-                  const SizedBox(height: 16),
-                  Text(
-                    'No notes found',
-                    style: GoogleFonts.syne(
-                      fontSize: 16,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onBackground
-                          .withOpacity(0.4),
-                    ),
-                  ),
-                ],
-              ).animate().fadeIn(),
-            )
-                : ListView.separated(
-              padding: const EdgeInsets.all(16),
-              itemCount: provider.filteredNotes.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 8),
-              itemBuilder: (_, i) {
-                final note = provider.filteredNotes[i];
-                return NoteListTile(note: note)
-                    .animate(delay: Duration(milliseconds: i * 50))
-                    .fadeIn(duration: 300.ms)
-                    .slideX(begin: 0.05);
-              },
             ),
           ),
-        ],
+        ),
+      ),
+      body: provider.filteredNotes.isEmpty
+          ? Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.search_off_rounded,
+              size: 64,
+              color: colorScheme.onSurface.withValues(alpha: 0.2), // ✅ Fix: onSurface instead of onBackground
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'No notes found',
+              style: GoogleFonts.syne(
+                fontSize: 16,
+                color: colorScheme.onSurface.withValues(alpha: 0.4), // ✅ Fix
+              ),
+            ),
+          ],
+        ).animate().fadeIn(),
+      )
+          : ListView.separated(
+        padding: const EdgeInsets.all(16),
+        itemCount: provider.filteredNotes.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 8),
+        itemBuilder: (_, i) {
+          final note = provider.filteredNotes[i];
+          return NoteListTile(note: note) // ✅ Fix: NoteListTile now imported and defined
+              .animate(delay: Duration(milliseconds: i * 50))
+              .fadeIn(duration: 300.ms)
+              .slideX(begin: 0.05);
+        },
       ),
     );
   }
