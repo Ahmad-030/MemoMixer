@@ -1,7 +1,7 @@
 // lib/note_list_tile.dart
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -27,15 +27,15 @@ class NoteListTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: isDark ? AppColors.darkCard : AppColors.lightCard,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(22),
           border: Border.all(
             color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
-            width: 1.5,
+            width: 1,
           ),
           boxShadow: [
             BoxShadow(
               color: (isDark ? Colors.black : AppColors.navy)
-                  .withOpacity(isDark ? 0.25 : 0.06),
+                  .withOpacity(isDark ? 0.2 : 0.05),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -44,11 +44,11 @@ class NoteListTile extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: Row(
           children: [
-            // Left thumbnail or icon
+            // Thumbnail
             if (hasPhoto)
               SizedBox(
-                width: 90,
-                height: 90,
+                width: 88,
+                height: 88,
                 child: Image.file(
                   File(note.photoPath!),
                   fit: BoxFit.cover,
@@ -56,105 +56,127 @@ class NoteListTile extends StatelessWidget {
               )
             else
               Container(
-                width: 90,
-                height: 90,
-                color: hasAudio
-                    ? AppColors.coral.withOpacity(0.12)
-                    : AppColors.mint.withOpacity(0.12),
+                width: 88,
+                height: 88,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: hasAudio
+                        ? [
+                      AppColors.electricBlue.withOpacity(0.15),
+                      AppColors.neonCoral.withOpacity(0.08),
+                    ]
+                        : [
+                      AppColors.neonMint.withOpacity(0.12),
+                      AppColors.electricBlue.withOpacity(0.06),
+                    ],
+                  ),
+                ),
                 child: Icon(
                   hasAudio ? Icons.mic_rounded : Icons.note_rounded,
-                  color: hasAudio ? AppColors.coral : AppColors.mint,
-                  size: 32,
+                  color: hasAudio
+                      ? AppColors.electricBlue
+                      : AppColors.neonMint,
+                  size: 30,
                 ),
               ),
 
             const SizedBox(width: 14),
 
-            // Content
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Title / Caption
                     Text(
-                      note.caption.isNotEmpty ? note.caption : 'Untitled Note',
+                      note.caption.isNotEmpty
+                          ? note.caption
+                          : 'Untitled Note',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.syne(
+                      style: GoogleFonts.spaceGrotesk(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
+                        letterSpacing: -0.2,
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
 
                     const SizedBox(height: 6),
 
-                    // Date + media badges
                     Row(
                       children: [
                         Icon(
                           Icons.access_time_rounded,
-                          size: 11,
+                          size: 10,
                           color: Theme.of(context)
                               .colorScheme
                               .onSurface
-                              .withOpacity(0.4),
+                              .withOpacity(0.35),
                         ),
                         const SizedBox(width: 3),
                         Text(
                           DateFormat('MMM d · h:mm a').format(note.createdAt),
-                          style: GoogleFonts.syne(
-                            fontSize: 11,
+                          style: GoogleFonts.spaceGrotesk(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
                             color: Theme.of(context)
                                 .colorScheme
                                 .onSurface
-                                .withOpacity(0.4),
+                                .withOpacity(0.35),
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        if (hasPhoto)
-                          _Badge(
-                            icon: Icons.photo_camera_rounded,
-                            color: AppColors.mint,
-                          ),
-                        if (hasAudio)
-                          _Badge(
-                            icon: Icons.mic_rounded,
-                            color: AppColors.coral,
-                          ),
-                        if (note.isFavorite)
-                          _Badge(
-                            icon: Icons.favorite_rounded,
-                            color: Colors.pink,
-                          ),
                       ],
                     ),
 
-                    // Tags
-                    if (note.tags.isNotEmpty) ...[
-                      const SizedBox(height: 6),
-                      Text(
-                        note.tags.take(3).map((t) => '#$t').join('  '),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.syne(
-                          fontSize: 11,
-                          color: AppColors.coral,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
+                    const SizedBox(height: 6),
+
+                    Row(
+                      children: [
+                        if (hasPhoto)
+                          _Badge(
+                              icon: Icons.photo_camera_rounded,
+                              color: AppColors.neonMint),
+                        if (hasAudio)
+                          _Badge(
+                              icon: Icons.mic_rounded,
+                              color: AppColors.electricBlue),
+                        if (note.isFavorite)
+                          _Badge(
+                              icon: Icons.favorite_rounded,
+                              color: Colors.pink),
+                        if (note.tags.isNotEmpty) ...[
+                          const SizedBox(width: 4),
+                          Text(
+                            note.tags.take(2).map((t) => '#$t').join(' '),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.spaceGrotesk(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.neonCoral,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
                   ],
                 ),
               ),
             ),
 
-            const Padding(
-              padding: EdgeInsets.only(right: 12),
-              child: Icon(Icons.chevron_right_rounded,
-                  color: AppColors.coral, size: 20),
+            Padding(
+              padding: const EdgeInsets.only(right: 14),
+              child: Icon(
+                Icons.chevron_right_rounded,
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withOpacity(0.2),
+                size: 20,
+              ),
             ),
           ],
         ),
@@ -172,9 +194,9 @@ class _Badge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(right: 4),
-      padding: const EdgeInsets.all(3),
+      padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
+        color: color.withOpacity(0.12),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Icon(icon, size: 10, color: color),
