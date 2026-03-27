@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy – MemoMixer</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+          --coral:    #FF6B6B;
+          --coral-lt: #FF8E8E;
+          --ink:      #12111A;
+          --ink-soft: #2E2D3D;
+          --muted:    #7A7890;
+          --surface:  #F9F8FF;
+          --line:     rgba(255,107,107,0.18);
+          --card-bg:  #FFFFFF;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+          font-family: 'DM Sans', sans-serif;
+          background: var(--surface);
+          color: var(--ink);
+          font-size: 15px;
+          line-height: 1.75;
+          padding: 0 0 64px;
+          -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── Hero ── */
+        .hero {
+          position: relative;
+          overflow: hidden;
+          background: var(--ink);
+          padding: 52px 28px 44px;
+          text-align: center;
+        }
+
+        .hero::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background:
+            radial-gradient(ellipse 70% 60% at 15% 110%, rgba(255,107,107,0.28) 0%, transparent 70%),
+            radial-gradient(ellipse 60% 50% at 85% -10%,  rgba(255,107,107,0.18) 0%, transparent 65%);
+          pointer-events: none;
+        }
+
+        .hero-eyebrow {
+          display: inline-block;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 10px;
+          font-weight: 600;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: var(--coral);
+          background: rgba(255,107,107,0.12);
+          border: 1px solid rgba(255,107,107,0.28);
+          border-radius: 50px;
+          padding: 4px 14px;
+          margin-bottom: 18px;
+        }
+
+        .hero h1 {
+          font-family: 'DM Serif Display', serif;
+          font-size: clamp(30px, 7vw, 42px);
+          color: #FFFFFF;
+          line-height: 1.15;
+          letter-spacing: -0.01em;
+          position: relative;
+        }
+
+        .hero h1 em {
+          font-style: italic;
+          color: var(--coral-lt);
+        }
+
+        .hero-meta {
+          margin-top: 14px;
+          font-size: 12px;
+          color: rgba(255,255,255,0.38);
+          letter-spacing: 0.04em;
+        }
+
+        /* Decorative circles */
+        .hero-ring {
+          position: absolute;
+          border-radius: 50%;
+          border: 1px solid rgba(255,107,107,0.12);
+          pointer-events: none;
+        }
+        .hero-ring.r1 { width: 280px; height: 280px; right: -80px; top: -100px; }
+        .hero-ring.r2 { width: 160px; height: 160px; right:  20px; top:  -40px; border-color: rgba(255,107,107,0.2); }
+        .hero-ring.r3 { width: 100px; height: 100px; left:  -30px; bottom: -20px; }
+
+        /* ── TOC strip ── */
+        .toc-strip {
+          display: flex;
+          gap: 8px;
+          overflow-x: auto;
+          padding: 20px 20px 0;
+          scrollbar-width: none;
+        }
+        .toc-strip::-webkit-scrollbar { display: none; }
+
+        .toc-chip {
+          flex-shrink: 0;
+          font-size: 11px;
+          font-weight: 500;
+          letter-spacing: 0.02em;
+          color: var(--muted);
+          background: #FFFFFF;
+          border: 1px solid #E8E6F0;
+          border-radius: 50px;
+          padding: 6px 14px;
+          text-decoration: none;
+          transition: color 0.2s, border-color 0.2s, background 0.2s;
+          white-space: nowrap;
+        }
+        .toc-chip:hover {
+          color: var(--coral);
+          border-color: var(--coral);
+          background: rgba(255,107,107,0.05);
+        }
+
+        /* ── Sections ── */
+        .content { padding: 28px 20px 0; }
+
+        .section {
+          background: var(--card-bg);
+          border-radius: 20px;
+          padding: 26px 24px;
+          margin-bottom: 14px;
+          border: 1px solid #EEECF7;
+          position: relative;
+          overflow: hidden;
+          animation: fadeUp 0.5s ease both;
+        }
+
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(16px); }
+          to   { opacity: 1; transform: translateY(0);    }
+        }
+
+        .section:nth-child(1)  { animation-delay: 0.05s; }
+        .section:nth-child(2)  { animation-delay: 0.10s; }
+        .section:nth-child(3)  { animation-delay: 0.15s; }
+        .section:nth-child(4)  { animation-delay: 0.20s; }
+        .section:nth-child(5)  { animation-delay: 0.25s; }
+        .section:nth-child(6)  { animation-delay: 0.30s; }
+        .section:nth-child(7)  { animation-delay: 0.35s; }
+
+        /* accent bar on left */
+        .section::before {
+          content: '';
+          position: absolute;
+          left: 0; top: 18px; bottom: 18px;
+          width: 3px;
+          background: linear-gradient(to bottom, var(--coral), transparent);
+          border-radius: 0 4px 4px 0;
+        }
+
+        .section-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 14px;
+        }
+
+        .section-icon {
+          width: 36px; height: 36px;
+          border-radius: 10px;
+          background: rgba(255,107,107,0.10);
+          display: flex; align-items: center; justify-content: center;
+          flex-shrink: 0;
+          font-size: 17px;
+        }
+
+        .section-num {
+          font-family: 'DM Serif Display', serif;
+          font-size: 11px;
+          color: var(--coral);
+          letter-spacing: 0.06em;
+        }
+
+        .section h2 {
+          font-family: 'DM Serif Display', serif;
+          font-size: 18px;
+          font-weight: 400;
+          color: var(--ink);
+          line-height: 1.2;
+        }
+
+        .section p {
+          color: var(--ink-soft);
+          font-size: 14px;
+          line-height: 1.75;
+          margin-bottom: 10px;
+        }
+        .section p:last-child { margin-bottom: 0; }
+
+        /* Permission pills */
+        .perm-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 10px;
+          margin-top: 14px;
+        }
+
+        .perm-card {
+          background: var(--surface);
+          border: 1px solid #EDEAF8;
+          border-radius: 14px;
+          padding: 12px 14px;
+        }
+
+        .perm-card .perm-icon {
+          font-size: 20px;
+          margin-bottom: 6px;
+          display: block;
+        }
+
+        .perm-card .perm-name {
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--ink);
+          display: block;
+          margin-bottom: 2px;
+        }
+
+        .perm-card .perm-desc {
+          font-size: 11.5px;
+          color: var(--muted);
+          line-height: 1.5;
+        }
+
+        /* Highlight box */
+        .highlight-box {
+          background: linear-gradient(135deg, rgba(255,107,107,0.08) 0%, rgba(255,107,107,0.03) 100%);
+          border: 1px solid rgba(255,107,107,0.2);
+          border-radius: 14px;
+          padding: 16px 18px;
+          margin-top: 14px;
+          display: flex;
+          gap: 12px;
+          align-items: flex-start;
+        }
+
+        .highlight-box .hl-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+
+        .highlight-box p {
+          font-size: 13.5px;
+          color: var(--ink-soft);
+          margin: 0 !important;
+        }
+
+        /* Contact link */
+        a.email-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin-top: 14px;
+          color: var(--coral);
+          font-weight: 600;
+          font-size: 14px;
+          text-decoration: none;
+          background: rgba(255,107,107,0.08);
+          border: 1px solid rgba(255,107,107,0.22);
+          border-radius: 50px;
+          padding: 8px 18px;
+          transition: background 0.2s;
+        }
+        a.email-link:hover { background: rgba(255,107,107,0.14); }
+
+        /* Footer */
+        .footer {
+          text-align: center;
+          padding: 32px 24px 0;
+          font-size: 12px;
+          color: var(--muted);
+        }
+        .footer span { color: var(--coral); }
+    </style>
+</head>
+<body>
+
+<!-- ── Hero ── -->
+<div class="hero">
+    <div class="hero-ring r1"></div>
+    <div class="hero-ring r2"></div>
+    <div class="hero-ring r3"></div>
+    <div class="hero-eyebrow">MemoMixer</div>
+    <h1>Your <em>Privacy,</em><br>Our Priority</h1>
+    <p class="hero-meta">Last updated: January 1, 2025</p>
+</div>
+
+<!-- ── TOC Chips ── -->
+<div class="toc-strip">
+    <a class="toc-chip" href="#data">Data</a>
+    <a class="toc-chip" href="#permissions">Permissions</a>
+    <a class="toc-chip" href="#third-party">3rd Party</a>
+    <a class="toc-chip" href="#security">Security</a>
+    <a class="toc-chip" href="#children">Children</a>
+    <a class="toc-chip" href="#changes">Changes</a>
+    <a class="toc-chip" href="#contact">Contact</a>
+</div>
+
+<!-- ── Content ── -->
+<div class="content">
+
+    <!-- Intro -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-icon">📋</div>
+            <div>
+                <div class="section-num">OVERVIEW</div>
+                <h2>About This Policy</h2>
+            </div>
+        </div>
+        <p>MemoMixer ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we handle your information when you use our app.</p>
+        <div class="highlight-box">
+            <span class="hl-icon">🔒</span>
+            <p><strong>Short version:</strong> Everything stays on your device. We never collect, upload, or share your personal data — ever.</p>
+        </div>
+    </div>
+
+    <!-- Data -->
+    <div class="section" id="data">
+        <div class="section-header">
+            <div class="section-icon">💾</div>
+            <div>
+                <div class="section-num">01 · DATA</div>
+                <h2>Data We Collect</h2>
+            </div>
+        </div>
+        <p>MemoMixer stores all your notes — including photos, audio recordings, captions, and tags — <strong>locally on your device</strong>.</p>
+        <p>We do not collect, transmit, or store any personal data on our servers. Your notes belong to you, and only you.</p>
+    </div>
+
+    <!-- Permissions -->
+    <div class="section" id="permissions">
+        <div class="section-header">
+            <div class="section-icon">🛡️</div>
+            <div>
+                <div class="section-num">02 · PERMISSIONS</div>
+                <h2>App Permissions</h2>
+            </div>
+        </div>
+        <p>We only request permissions that are strictly necessary for core features:</p>
+        <div class="perm-grid">
+            <div class="perm-card">
+                <span class="perm-icon">📷</span>
+                <span class="perm-name">Camera</span>
+                <span class="perm-desc">Capture photos for your notes</span>
+            </div>
+            <div class="perm-card">
+                <span class="perm-icon">🎙️</span>
+                <span class="perm-name">Microphone</span>
+                <span class="perm-desc">Record audio memos</span>
+            </div>
+            <div class="perm-card">
+                <span class="perm-icon">🖼️</span>
+                <span class="perm-name">Photo Library</span>
+                <span class="perm-desc">Pick existing photos from gallery</span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Third Party -->
+    <div class="section" id="third-party">
+        <div class="section-header">
+            <div class="section-icon">🚫</div>
+            <div>
+                <div class="section-num">03 · THIRD-PARTY</div>
+                <h2>Third-Party Services</h2>
+            </div>
+        </div>
+        <p>MemoMixer does not use any third-party analytics, advertising, or tracking services.</p>
+        <div class="highlight-box">
+            <span class="hl-icon">✅</span>
+            <p>No ads. No trackers. No data brokers. Zero.</p>
+        </div>
+    </div>
+
+    <!-- Security -->
+    <div class="section" id="security">
+        <div class="section-header">
+            <div class="section-icon">🔐</div>
+            <div>
+                <div class="section-num">04 · SECURITY</div>
+                <h2>Data Security</h2>
+            </div>
+        </div>
+        <p>All your notes are stored in your device's internal storage and SharedPreferences, protected by your device's own security model.</p>
+        <p>We recommend keeping your device secured with a PIN or biometric lock for an added layer of protection.</p>
+    </div>
+
+    <!-- Children -->
+    <div class="section" id="children">
+        <div class="section-header">
+            <div class="section-icon">👶</div>
+            <div>
+                <div class="section-num">05 · CHILDREN</div>
+                <h2>Children's Privacy</h2>
+            </div>
+        </div>
+        <p>MemoMixer is not directed to children under 13. We do not knowingly collect personal information from children under 13. If you believe a child has provided us with personal information, please contact us immediately.</p>
+    </div>
+
+    <!-- Changes -->
+    <div class="section" id="changes">
+        <div class="section-header">
+            <div class="section-icon">📝</div>
+            <div>
+                <div class="section-num">06 · CHANGES</div>
+                <h2>Policy Updates</h2>
+            </div>
+        </div>
+        <p>We may update this Privacy Policy from time to time. Any changes will be reflected in the app with an updated date at the top of this page. Continued use of the app after changes constitutes acceptance of the updated policy.</p>
+    </div>
+
+    <!-- Contact -->
+    <div class="section" id="contact">
+        <div class="section-header">
+            <div class="section-icon">✉️</div>
+            <div>
+                <div class="section-num">07 · CONTACT</div>
+                <h2>Get in Touch</h2>
+            </div>
+        </div>
+        <p>Have questions or concerns about this Privacy Policy? We'd love to hear from you.</p>
+        <a class="email-link" href="mailto:dev@memomixer.app">✉ dev@memomixer.app</a>
+    </div>
+
+</div>
+
+<div class="footer">
+    Made with <span>♥</span> by the MemoMixer team · © 2025
+</div>
+
+</body>
+</html>

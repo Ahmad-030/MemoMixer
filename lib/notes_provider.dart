@@ -130,6 +130,10 @@ class NotesProvider extends ChangeNotifier {
   }
 
   // ── Search & Filter ───────────────────────────────────
+
+  /// Alias used by SearchScreen — updates the query and notifies listeners.
+  void searchNotes(String query) => setSearchQuery(query);
+
   void setSearchQuery(String q) {
     _searchQuery = q;
     notifyListeners();
